@@ -51,7 +51,7 @@ export default ({ preloadDataQuery, routerItems }) => {
 
             }).finally(() => setLoading(false));
 
-    }, [preloadDataQuery, routerItems]);
+    }, [dispatch, preloadDataQuery, routerItems]);
 
     return {
         isLoading,

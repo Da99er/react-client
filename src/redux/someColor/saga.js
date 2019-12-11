@@ -4,8 +4,8 @@ import { takeEvery } from 'redux-saga/effects';
 function* changeLocation({ payload }) {
 
     const { location, action } = payload;
-    // eslint-disable-next-line
 
+    // eslint-disable-next-line
     yield console.log('LOCATION_CHANGE', location, action);
 
 }

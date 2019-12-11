@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+
 const httpXHR = ({ method = 'GET', url, headers = {}, body }) => new Promise((resolve, reject) => {
 
     if (window.IS_SERVER) {

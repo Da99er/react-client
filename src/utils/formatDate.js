@@ -84,7 +84,7 @@ const formatraw = (date, format, utc) => {
 
     let tz = -raw.getTimezoneOffset();
 
-    let K = utc || !tz ? 'Z' : tz > 0 ? '+' : '-';
+    let K = utc || !tz ? 'Z' : tz > 0 ? '+' : '-'; // eslint-disable-line no-nested-ternary
 
     if (!utc) {
 
