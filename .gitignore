@@ -1,2 +1,5 @@
 /node_modules
-drop.js
+package-lock.json
+yarn.lock
+bundle
+.cache-loader
