@@ -1,4 +1,4 @@
-import prefixCreator from '@root/redux/prefixCreator';
+import prefixCreator from '@root/redux/utils/prefixCreator';
 
 const prefix = prefixCreator('someColor');
 

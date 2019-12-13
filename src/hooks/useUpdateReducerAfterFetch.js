@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { batch, useDispatch } from 'react-redux';
 import qs from 'query-string';
 
-import prefixCreator from '@root/redux/prefixCreator';
+import prefixCreator from '@root/redux/utils/prefixCreator';
 
 import sameGraphQl from '@root/utils/sameGraphQl';
 

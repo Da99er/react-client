@@ -1,40 +1,34 @@
-import { LOCATION_CHANGE } from 'redux-first-history';
-import { takeEvery } from 'redux-saga/effects';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-function* changeLocation({ payload }) {
+import { changeColorSuccess } from './actions';
+import sameGraphQl from '@root/utils/sameGraphQl';
 
-    const { location, action } = payload;
+import { UPLOAD } from './types';
 
-    // eslint-disable-next-line
-    yield console.log('LOCATION_CHANGE', location, action);
+function* changeColor({ payload }) {
+
+    const { someColor } = yield call(sameGraphQl, {
+        method: 'POST',
+        query: {
+            someColor: payload,
+        },
+        items: payload.routerItems || {},
+    });
+
+    yield put(changeColorSuccess(someColor));
 
 }
 
-export default function* rootSaga() {
+function* watchChangeColor() {
 
-    yield takeEvery(LOCATION_CHANGE, changeLocation);
+    yield takeEvery(UPLOAD, changeColor);
 
 }
 
-/* import { call, fork, put, takeEvery } from 'redux-saga/effects';
+function* rootSaga() {
 
-import { findCases as findCasesBase } from '@/redux/entities/cases/saga';
+    yield fork(watchChangeColor);
 
-import { findCasesSuccess } from './actions';
-import { FIND_CASES } from './types';
-
-function* findCases(options) {
-  const ids = yield call(findCasesBase, options);
-
-  yield put(findCasesSuccess(ids));
 }
 
-function* watchFindCases() {
-  yield takeEvery(FIND_CASES, findCases);
-}
-
-function* casesSaga() {
-  yield fork(watchFindCases);
-}
-
-export default casesSaga;*/
+export default rootSaga;
