@@ -7,7 +7,7 @@
         "lint": "eslint --fix . && stylelint **/*.scss",
         "test": "echo \"no tests\"",
         "start": "MODE=development DOMAIN_NAME='my-own-site.cot' webpack --config ./src/webpack.config.js --progress --watch",
-        "prod": "MODE=production DOMAIN_NAME='my-own-site.cot' webpack --config ./src/webpack.config.js --progress",
+        "prod": "MODE=production DOMAIN_NAME='my-own-site.cot' webpack --config ./src/webpack.config.js --progress --watch",
         "build:analyzer": "MODE=production DOMAIN_NAME='my-own-site.cot' ANALYZER=true webpack --config ./src/webpack.config.js"
     },
     "lint-staged": {
