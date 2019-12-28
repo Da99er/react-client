@@ -6,15 +6,15 @@ import sameGraphQl from '@root/utils/sameGraphQl';
 import { parse } from '@root/utils/prepareQuery';
 import App from '@root/App';
 
-const preloadDataQuery = parse(document.getElementById('preloadDataQuery').innerHTML);
-const routerItems = parse(document.getElementById('routerItems').innerHTML);
+const preloadDataQuery = parse(document.getElementById('preloadDataQuery').innerText);
+const routerItems = parse(document.getElementById('routerItems').innerText);
 const { params } = qs.parse(location.search);
 
 sameGraphQl({
     method: 'GET',
     query: preloadDataQuery,
     items: routerItems || {},
-    params: params || {},
+    params: params ? parse(params) : {},
 })
     .then((initalState) => {
 

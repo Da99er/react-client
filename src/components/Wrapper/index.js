@@ -7,10 +7,11 @@ import '@root/style/style.scss';
 
 import S from './style.scss';
 import useHook from './hook';
-
 const Wrapper = ({ children }) => {
 
-    const {color} = useHook();
+    const {text} = useHook();
+
+    const color = (`${text.split('').reduce((acc, letter) => (acc + letter.charCodeAt()), 0)}000000`).slice(0, 6);
 
     return (
         <div

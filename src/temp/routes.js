@@ -1,19 +1,19 @@
 import { stringify } from '@root/utils/prepareQuery';
 
 const routes = [{
-    path: '/color/:color',
-    component: 'Color',
+    path: '/testpath/:test([a-z]{4})',
+    component: 'TestText',
     preloadDataQuery: stringify({
-        'someColor': {
-            color: "255111"
+        'testText': {
+            text: "some text"
         }
     })
 }, {
     path: "/:anything*",
     component: 'NotFound',
     preloadDataQuery: stringify({
-        'someColor': {
-            color: "000000"
+        'testText': {
+            text: "not found text"
         }
     })
 }];

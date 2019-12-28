@@ -1,5 +1,5 @@
-import someColor from '@root/redux/someColor/reducer';
+import testText from '@root/redux/testText/reducer';
 
 export default {
-    someColor,
+    testText,
 };

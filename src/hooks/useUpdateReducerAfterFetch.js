@@ -25,7 +25,7 @@ export default ({ preloadDataQuery, routerItems }) => {
             method: 'GET',
             query: fetchQueryObj,
             items: routerItems || {},
-            params: params || {},
+            params: params ? parse(params) : {},
         })
             .then((loaderProperties) => {
 

@@ -1,10 +1,10 @@
 import { fork } from 'redux-saga/effects';
 
-import someColor from '@root/redux/someColor/saga';
+import testText from '@root/redux/testText/saga';
 
 function* rootSaga() {
 
-    yield fork(someColor);
+    yield fork(testText);
 
 }
 

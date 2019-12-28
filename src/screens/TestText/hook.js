@@ -2,8 +2,8 @@ import { useCallback } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import { getColor } from '@root/redux/someColor/selectors';
-import { changeColor } from '@root/redux/someColor/actions';
+import { getText } from '@root/redux/testText/selectors';
+import { changeText } from '@root/redux/testText/actions';
 
 export default (routerItems) => {
 
@@ -11,15 +11,15 @@ export default (routerItems) => {
 
     const handleClick = useCallback(() => {
 
-        dispatch(changeColor({
-            color: (`0000${Math.random() / 10}`).slice(-6),
+        dispatch(changeText({
+            text: `text width random number ${Math.random()}`,
             routerItems,
         }));
 
     });
 
     return {
-        color: useSelector((state) => getColor(state)),
+        text: useSelector((state) => getText(state)),
         handleClick,
     };
 

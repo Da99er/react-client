@@ -1,11 +1,11 @@
-import { UPLOADED } from '@root/redux/someColor/types';
+import { UPLOADED } from '@root/redux/testText/types';
 
 const defaultState = {
-    color: '000000',
+    text: '',
     error: null,
 };
 
-const someColorReducer = (state = defaultState, action) => {
+const testTextReducer = (state = defaultState, action) => {
 
     switch (action.type) {
 
@@ -25,4 +25,4 @@ const someColorReducer = (state = defaultState, action) => {
 
 };
 
-export default someColorReducer;
+export default testTextReducer;

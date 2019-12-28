@@ -1,7 +1,7 @@
 import NotFound from '@root/screens/NotFound';
-import Color from '@root/screens/Color';
+import TestText from '@root/screens/TestText';
 
 export default {
     NotFound,
-    Color,
+    TestText,
 };

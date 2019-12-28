@@ -18,8 +18,8 @@ exports.START = () => `<!DOCTYPE html>
 <body >
 <div id="root">`;
 
-exports.END = ({ preloadDataQuery, items }) => `</div>
+exports.END = ({ preloadDataQuery, routerItems }) => `</div>
 <div id="preloadDataQuery" hidden="true">${preloadDataQuery}</div>
-<div id="routerItems" hidden="true">${items}</div>
+<div id="routerItems" hidden="true">${routerItems}</div>
 <script type="text/javascript" src="${getFile('client.js')}"></script>
 </body></html>`;

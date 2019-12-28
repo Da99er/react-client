@@ -3,11 +3,26 @@ import React, { createElement } from 'react';
 import { Provider } from 'react-redux';
 
 import { Router, Route, Switch } from 'wouter';
+import makeCachedMatcher from 'wouter/matcher';
 
 import routes from '@temp/routes';
 import createStore from '@root/redux/createStore';
 
 import routerSet from '@root/routerSet';
+
+import { pathToRegexp } from 'path-to-regexp';
+
+const convertPathToRegexp = (path) => {
+
+    const keys = [];
+    // we use original pathToRegexp package here with keys
+    const regexp = pathToRegexp(path, keys, { strict: true });
+
+    return { keys, regexp };
+
+};
+
+const myMatcher = makeCachedMatcher(convertPathToRegexp);
 
 const allRoutes = (routes || []).map((route) => {
 
@@ -30,7 +45,7 @@ const App = ({ initalState, requestUrl }) => {
 
     return (
         <Provider store={store} >
-            <Router hook={wouterUseLocation} >
+            <Router hook={wouterUseLocation} matcher={myMatcher} >
                 {createElement(Switch, null, allRoutes)}
             </Router>
         </Provider>
