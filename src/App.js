@@ -16,7 +16,7 @@ const convertPathToRegexp = (path) => {
 
     const keys = [];
     // we use original pathToRegexp package here with keys
-    const regexp = pathToRegexp(path, keys, { strict: true });
+    const regexp = pathToRegexp(path, keys, { strict: false });
 
     return { keys, regexp };
 
