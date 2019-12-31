@@ -17,6 +17,7 @@ const NotFound = ({ preloadDataQuery, routerItems }) => {
             <TopMenu />
             <h1>NotFound page: {text}</h1>
             {isLoading && (<p>Loading</p>)}
+            <p>routerItems: {JSON.stringify(routerItems)}</p>
         </Wrapper>
     );
 

@@ -18,7 +18,7 @@ const TestText = ({ preloadDataQuery, routerItems }) => {
             <TopMenu />
             <h1>Text page: {text}</h1>
             <button onClick={handleClick} className={S.button}>change text</button>
-            <p>{JSON.stringify(routerItems)}</p>
+            <p>routerItems: {JSON.stringify(routerItems)}</p>
             {isLoading && (<p>Loading</p>)}
         </Wrapper>
     );
