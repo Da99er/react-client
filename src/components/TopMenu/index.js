@@ -7,10 +7,10 @@ import S from './style';
 const TopMenu = () => (
     <div className={S.root}>
         <ActiveLink href="/testpath/abcd" className={S.link} active={S.active} >test aaa</ActiveLink>
-        <ActiveLink href="/testpath/qwer" className={S.link} active={S.active} >test sdf</ActiveLink>
+        <ActiveLink href="/testpath/qwer" className={S.link} active={S.active} >test qwer</ActiveLink>
         <SagaLink href="/testpath/push" params={{tratata: 1212}} className={S.link}
             active={S.active}
-        >my qyery in string tratata:1212</SagaLink>
+        >push qyery &#123;tratata:1212&#125;</SagaLink>
         <ActiveLink href="/notfound" className={S.link} active={S.active} >not found</ActiveLink>
         <ActiveLink href="/testpath/erro" className={S.link} active={S.active} >error</ActiveLink>
     </div>
