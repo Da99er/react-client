@@ -1,6 +1,6 @@
 const { join } = require('path');
 
-const { PATH_TO_PUBLIC } = require(join(global.MY1_GLOBAL.PATH_TO_CLIENT, 'globals', 'path-to'));
+const { PATH_TO_PUBLIC } = require(join(__dirname, '..', 'globals', 'path-to'));
 
 const getFile = (file) => join(PATH_TO_PUBLIC, global.MY1_GLOBAL.RELOAD_FILES_STORAGE[file] || '');
 
