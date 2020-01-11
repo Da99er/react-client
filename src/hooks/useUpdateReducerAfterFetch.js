@@ -9,7 +9,18 @@ import sameGraphQl from '@root/utils/sameGraphQl';
 
 import { parse } from '@root/utils/prepareQuery';
 
+let isFirstLoading = true;
+
 export default ({ preloadDataQuery, routerItems }) => {
+
+    if (isFirstLoading) {
+
+        isFirstLoading = false;
+        return {
+            isLoading: false,
+        };
+
+    }
 
     const dispatch = useDispatch();
     const [isLoading, setLoading] = useState(false);
