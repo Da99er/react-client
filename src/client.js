@@ -15,7 +15,7 @@ sameGraphQl({
 
         const clientState = {
             ...initalState,
-            siteFirstLoaded: true,
+            siteFirstTimeLoaded: true,
         };
 
         ReactDOM.hydrate(

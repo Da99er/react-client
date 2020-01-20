@@ -1,5 +1,5 @@
 import prefixCreator from '@root/redux/utils/prefixCreator';
 
-const prefix = prefixCreator('siteFirstLoaded');
+const prefix = prefixCreator('siteFirstTimeLoaded');
 
 export const SWITCH = `${prefix}SWITCH`;

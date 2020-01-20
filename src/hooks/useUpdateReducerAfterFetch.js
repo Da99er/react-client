@@ -5,7 +5,7 @@ import qs from 'query-string';
 import { parse } from '@root/utils/prepareQuery';
 
 import prefixCreator from '@root/redux/utils/prefixCreator';
-import { getSiteFirstLoadedStatus } from '@root/redux/siteFirstLoaded/selectors';
+import { getSiteFirstLoadedStatus } from '@root/redux/siteFirstTimeLoaded/selectors';
 
 import sameGraphQl from '@root/utils/sameGraphQl';
 
@@ -21,7 +21,7 @@ export default ({ preloadDataQuery, routerItems }) => {
         if (isSiteFirstLoaded) {
 
             dispatch({
-                type: `${prefixCreator('siteFirstLoaded')}SWITCH`,
+                type: `${prefixCreator('siteFirstTimeLoaded')}SWITCH`,
             });
             return;
 
