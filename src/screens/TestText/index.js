@@ -26,7 +26,7 @@ const TestText = ({ preloadDataQuery, routerItems }) => {
 };
 
 TestText.propTypes = {
-    preloadDataQuery: PropTypes.string.isRequired,
+    preloadDataQuery: PropTypes.object.isRequired,
 };
 
 export default TestText;

@@ -1,6 +1,7 @@
 import React, { createElement } from 'react';
 
 import { Provider } from 'react-redux';
+import { pathToRegexp } from 'path-to-regexp';
 
 import { Router, Route, Switch } from 'wouter';
 import makeCachedMatcher from 'wouter/matcher';
@@ -8,9 +9,9 @@ import makeCachedMatcher from 'wouter/matcher';
 import routes from '@temp/routes';
 import createStore from '@root/redux/createStore';
 
-import routerSet from '@root/routerSet';
+import { parse } from '@root/utils/prepareQuery';
 
-import { pathToRegexp } from 'path-to-regexp';
+import routerSet from '@root/routerSet';
 
 const convertPathToRegexp = (path) => {
 
@@ -27,13 +28,14 @@ const myMatcher = makeCachedMatcher(convertPathToRegexp);
 const allRoutes = (routes || []).map((route) => {
 
     const Component = routerSet[route.component];
+    const preloadDataQuery = parse(route.preloadDataQuery) || {};
 
     return (
         <Route
             path={route.path}
             key={route.path}
         >
-            {(routerItems) => <Component routerItems={routerItems} preloadDataQuery={route.preloadDataQuery} />}
+            {(routerItems = {}) => <Component routerItems={routerItems.anything ? {} : routerItems} preloadDataQuery={preloadDataQuery} />}
         </Route>
     );
 

@@ -1,26 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import qs from 'query-string';
 
 import sameGraphQl from '@root/utils/sameGraphQl';
 import { parse } from '@root/utils/prepareQuery';
 import App from '@root/App';
 
 const preloadDataQuery = parse(document.getElementById('preloadDataQuery').innerText);
-const routerItems = parse(document.getElementById('routerItems').innerText);
-const { params } = qs.parse(location.search);
 
 sameGraphQl({
     method: 'GET',
-    query: preloadDataQuery,
-    items: routerItems || {},
-    params: params ? parse(params) : {},
+    params: preloadDataQuery || {},
 })
     .then((initalState) => {
 
+        const clientState = {
+            ...initalState,
+            siteFirstLoaded: true,
+        };
+
         ReactDOM.hydrate(
             <App
-                initalState={initalState}
+                initalState={clientState}
                 requestUrl={location.pathname}
             />,
             document.getElementById('root')

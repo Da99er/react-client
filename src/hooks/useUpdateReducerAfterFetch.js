@@ -1,42 +1,52 @@
 /* eslint-disable max-nested-callbacks */
 import { useEffect, useState } from 'react';
-import { batch, useDispatch } from 'react-redux';
+import { batch, useDispatch, useSelector } from 'react-redux';
 import qs from 'query-string';
+import { parse } from '@root/utils/prepareQuery';
 
 import prefixCreator from '@root/redux/utils/prefixCreator';
+import { getSiteFirstLoadedStatus } from '@root/redux/siteFirstLoaded/selectors';
 
 import sameGraphQl from '@root/utils/sameGraphQl';
 
-import { parse } from '@root/utils/prepareQuery';
-
-let isFirstLoading = true;
-
 export default ({ preloadDataQuery, routerItems }) => {
-
-    if (isFirstLoading) {
-
-        isFirstLoading = false;
-        return {
-            isLoading: false,
-        };
-
-    }
 
     const dispatch = useDispatch();
     const [isLoading, setLoading] = useState(false);
 
+    const isSiteFirstLoaded = useSelector(getSiteFirstLoadedStatus);
+
     useEffect(() => {
 
-        const fetchQueryObj = parse(preloadDataQuery);
+        if (isSiteFirstLoaded) {
+
+            dispatch({
+                type: `${prefixCreator('siteFirstLoaded')}SWITCH`,
+            });
+            return;
+
+        }
+
         const { params } = qs.parse(location.search);
+        const parsedParams = parse(params);
+
+        const preloadQuery = {};
+
+        Object.keys(preloadDataQuery).forEach((property) => {
+
+            preloadQuery[property] = {
+                ...parsedParams,
+                ...routerItems,
+                ...preloadDataQuery[property],
+            };
+
+        });
 
         setLoading(true);
 
         sameGraphQl({
             method: 'GET',
-            query: fetchQueryObj,
-            items: routerItems || {},
-            params: params ? parse(params) : {},
+            params: preloadQuery,
         })
             .then((loaderProperties) => {
 
@@ -55,14 +65,16 @@ export default ({ preloadDataQuery, routerItems }) => {
 
                 });
 
+                setLoading(false);
+
             })
             .catch((err) => {
 
                 console.error(err); // eslint-disable-line no-console
 
-            }).finally(() => setLoading(false));
+            });
 
-    }, [dispatch, preloadDataQuery, routerItems]);
+    }, [dispatch, isSiteFirstLoaded, preloadDataQuery, routerItems]);
 
     return {
         isLoading,

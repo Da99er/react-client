@@ -1,6 +1,5 @@
-import qs from 'query-string';
 import httpXHR from '@root/utils/httpXHR';
-import { stringify, parse } from '@root/utils/prepareQuery';
+import { stringify } from '@root/utils/prepareQuery';
 
 const headers = {
     Accept: 'application/json, application/xml, text/plain, text/html, *.*',
@@ -8,19 +7,16 @@ const headers = {
     'same-graphql': true,
 };
 
-const sameGraphQl = ({ method, query = {}, params = {}, items = {} }) => {
+const sameGraphQl = ({ method, params = {} }) => {
 
-    if ((typeof query) === (typeof params) === (typeof items === 'object')) {
-
-        const urlQuery = qs.parse(location.search);
-        const newParams = Object.keys(params).length ? params : parse(urlQuery.params);
+    if (typeof params === 'object') {
 
         if (method === 'GET') {
 
             return httpXHR({
                 method,
                 headers,
-                url: `/apiv1/same-graphql?query=${stringify(query)}&params=${stringify(newParams)}&items=${stringify(items)}`,
+                url: `/apiv1/same-graphql?params=${stringify(params)}`,
             });
 
         }
@@ -28,13 +24,13 @@ const sameGraphQl = ({ method, query = {}, params = {}, items = {} }) => {
         return httpXHR({
             method,
             headers,
-            url: `/apiv1/same-graphql?params=${stringify(newParams)}&items=${stringify(items)}`,
-            body: stringify(query),
+            url: '/apiv1/same-graphql',
+            body: stringify(params),
         });
 
     }
 
-    throw new Error('sameGraphQl: arguments have wrong type');
+    throw new Error('sameGraphQl: argument have wrong type');
 
 };
 
