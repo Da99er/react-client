@@ -20,9 +20,6 @@ export default ({ preloadDataQuery, routerItems }) => {
 
         if (isSiteFirstLoaded) {
 
-            dispatch({
-                type: `${prefixCreator('siteFirstTimeLoaded')}SWITCH`,
-            });
             return;
 
         }
@@ -61,6 +58,10 @@ export default ({ preloadDataQuery, routerItems }) => {
                             payload: loaderProperties[property],
                         });
 
+                    });
+
+                    dispatch({
+                        type: `${prefixCreator('siteFirstTimeLoaded')}SWITCH`,
                     });
 
                 });

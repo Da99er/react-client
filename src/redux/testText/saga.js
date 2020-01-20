@@ -9,10 +9,9 @@ function* changeText({ payload }) {
 
     const { testText } = yield call(sameGraphQl, {
         method: 'POST',
-        query: {
+        params: {
             testText: payload,
         },
-        items: payload.routerItems || {},
     });
 
     yield put(changeTextSuccess(testText));
