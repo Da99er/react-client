@@ -71,11 +71,11 @@ export default ({ preloadDataQuery, routerItems }) => {
             })
             .catch((err) => {
 
-                console.error(err); // eslint-disable-line no-console
+                console.error(err); // eslint-disable-line
 
             });
 
-    }, [dispatch, isSiteFirstLoaded, preloadDataQuery, routerItems]);
+    }, [dispatch, preloadDataQuery, routerItems]); // eslint-disable-line
 
     return {
         isLoading,
