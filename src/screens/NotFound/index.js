@@ -27,6 +27,7 @@ const NotFound = ({ preloadDataQuery, routerItems }) => {
 
 NotFound.propTypes = {
     preloadDataQuery: PropTypes.object.isRequired,
+    routerItems: PropTypes.object.isRequired,
 };
 
 export default NotFound;
