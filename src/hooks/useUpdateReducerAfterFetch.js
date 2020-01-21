@@ -39,6 +39,7 @@ export default ({ preloadDataQuery, routerItems }) => {
                 ...parsedParams,
                 ...routerItems,
                 ...preloadDataQuery[property],
+                pathname: location.pathname,
             };
 
         });
