@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const { join, resolve } = require('path');
-const { exec } = require('child_process');
 
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -24,17 +23,6 @@ const {
 const isDevelope = MODE !== 'production';
 const isProduction = MODE === 'production';
 
-exec(`rm -fr ${PATH_TO_BUNDLE}/*`, (err, stdout, stderr) => { // eslint-disable-line no-unused-vars
-
-    if (err) {
-
-        console.err(err); // eslint-disable-line no-console
-        return;
-
-    }
-
-});
-
 const recursiveIssuer = (m) => {
 
     if (m.issuer) {
@@ -56,6 +44,7 @@ const recursiveIssuer = (m) => {
 const createWebpackConfig = () => {
 
     const config = {
+        bail: true,
         mode: MODE,
         plugins: [],
         devtool: isProduction ? '' : 'inline-source-map',
@@ -116,7 +105,7 @@ const createWebpackConfig = () => {
         },
     }));
 
-    config.plugins.push(new CleanWebpackPlugin());
+    config.plugins.push(new CleanWebpackPlugin({ cleanStaleWebpackAssets: true }));
 
     if (isProduction) {
 
