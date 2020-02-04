@@ -1,1 +1,1 @@
-export const getText = (state) => state.testText.text;
+export const getText = (state) => state.testText.text || state.testText.error || '';

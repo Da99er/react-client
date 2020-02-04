@@ -5,19 +5,14 @@ const defaultState = {
     error: null,
 };
 
-const testTextReducer = (state = defaultState, action) => {
+const testTextReducer = (state = defaultState, { type, payload = {} }) => {
 
-    switch (action.type) {
+    if (type === UPLOADED) {
 
-        case UPLOADED:
-
-            return {
-                ...state,
-                ...action.payload,
-            };
-
-        default:
-            break;
+        return {
+            ...state,
+            ...payload,
+        };
 
     }
 
