@@ -10,12 +10,16 @@ const ActiveLink = ({ href, className, active, children }) => {
     return (
         <Link
             href={href}
-            className={cx({
-                [className]: true,
-                [active]: isActive,
-            })}
         >
-            {children}
+            <a
+                href={href}
+                className={cx({
+                    [className]: true,
+                    [active]: isActive,
+                })}
+            >
+                {children}
+            </a>
         </Link>
     );
 
