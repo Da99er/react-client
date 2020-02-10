@@ -63,7 +63,7 @@ export default ({ preloadDataQuery, routerItems }) => {
                             payload: loaderProperties[property],
                         });
 
-                        if (loaderProperties[property].error) {
+                        if (loaderProperties[property] && loaderProperties[property].error) {
 
                             throw loaderProperties[property].error;
 
