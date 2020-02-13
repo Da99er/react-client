@@ -5,7 +5,7 @@ import '@root/style/fonts.scss';
 import '@root/style/reset.scss';
 import '@root/style/style.scss';
 
-import S from './style.scss';
+import S from './style';
 import useHook from './hook';
 const Wrapper = ({ children }) => {
 

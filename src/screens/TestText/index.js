@@ -6,7 +6,7 @@ import TopMenu from '@root/components/TopMenu';
 import useUpdateReducerAfterFetch from '@root/hooks/useUpdateReducerAfterFetch';
 
 import useHook from './hook';
-import S from './style.css';
+import S from './style';
 
 const TestText = ({ preloadDataQuery, routerItems }) => {
 
