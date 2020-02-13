@@ -65,7 +65,11 @@ export default ({ preloadDataQuery, routerItems }) => {
 
                         if (loaderProperties[property] && loaderProperties[property].error) {
 
-                            throw loaderProperties[property].error;
+                            setTimeout(() => {
+
+                                throw new Error(`${property}: ${loaderProperties[property].error}`);
+
+                            }, 10);
 
                         }
 
@@ -76,9 +80,9 @@ export default ({ preloadDataQuery, routerItems }) => {
                 setLoading(false);
 
             })
-            .catch((err) => {
+            .catch((error) => {
 
-                console.error(err); // eslint-disable-line
+                throw new Error(error);
 
             });
 
