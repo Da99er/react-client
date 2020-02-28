@@ -18,7 +18,7 @@ const PATH_TO_TEMP = join(PATH_TO_CLIENT, 'temp');
 const {
     PATH_TO_BUNDLE,
     PATH_TO_PUBLIC,
-} = require(join(PATH_TO_CLIENT, 'globals', 'path-to'));
+} = require(join(PATH_TO_CLIENT, 'globals', 'pathTo'));
 
 const isDevelope = MODE !== 'production';
 const isProduction = MODE === 'production';
