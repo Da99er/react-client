@@ -189,7 +189,6 @@ const createWebpackConfig = () => {
 
     config.module.rules.push({
         test: /\.(css|scss)$/,
-        exclude: /node_modules/,
         use: [
             MiniCssExtractPlugin.loader,
             {

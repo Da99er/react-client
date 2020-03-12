@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import 'normalize.css/normalize.css';
+
 import '@root/style/fonts.scss';
-import '@root/style/reset.scss';
 import '@root/style/style.scss';
 
 import S from './style';
