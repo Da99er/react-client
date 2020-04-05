@@ -6,7 +6,13 @@
         url("./fonts/EnamelaW01-Condensed.woff2") format("woff2"),
         url("./fonts/EnamelaW01-Condensed.woff") format("woff");
 }
+
 @font-face {
     font-family: "Tahova";
     src: url("./fonts/Tahoma.ttf");
+}
+
+@font-face {
+    font-family: "font-electro";
+    src: url("./fonts/font-electro.woff");
 }
