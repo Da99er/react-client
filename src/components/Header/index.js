@@ -8,18 +8,17 @@ import layots from '@root/style/layots.scss';
 
 import S from './style';
 
-const Header = () => (
-    <div className={S.root} >
-        <div
-            className={cx({
-                [layots.fullContainer]: true,
-                [S.tagLine]: true,
-            })}
-        >
-            <ActiveLink href="/" className={S.tagLine} >Welcome to Worldwide Electronics Store</ActiveLink>
-            <TopMenu className={S.topBarMenu} />
+function Header() {
+
+    return (
+        <div className={S.root} >
+            <div className={cx([layots.fullContainer, S.tagLine])} >
+                <ActiveLink href="/" className={S.tagLine} >Logo text</ActiveLink>
+                <TopMenu className={S.topBarMenu} />
+            </div>
         </div>
-    </div>
-);
+    );
+
+}
 
 export default Header;

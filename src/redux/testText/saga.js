@@ -1,4 +1,4 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { changeTextSuccess } from './actions';
 import sameGraphQl from '@root/utils/sameGraphQl';
@@ -18,15 +18,9 @@ function* changeText({ payload }) {
 
 }
 
-function* watchChangeText() {
-
-    yield takeEvery(UPLOAD, changeText);
-
-}
-
 function* rootSaga() {
 
-    yield fork(watchChangeText);
+    yield takeEvery(UPLOAD, changeText);
 
 }
 

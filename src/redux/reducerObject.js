@@ -1,7 +1,7 @@
 import testText from '@root/redux/testText/reducer';
-import siteFirstTimeLoaded from '@root/redux/siteFirstTimeLoaded/reducer';
+import gui from '@root/redux/gui/reducer';
 
 export default {
-    siteFirstTimeLoaded,
     testText,
+    gui,
 };

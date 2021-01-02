@@ -1,30 +1,40 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 import Screen from '@root/components/Screen';
-import Header from '@root/components/Header';
+
 import useUpdateReducerAfterFetch from '@root/hooks/useUpdateReducerAfterFetch';
 
+import interactive from '@root/style/interactive.scss';
+
 import useHook from './hook';
-import S from './style';
+import S from './style.scss';
 
-const NotFound = ({ preloadDataQuery, routerItems }) => {
+function NotFound({ preloadDataQuery, routerItems }) {
 
-    const { isLoading } = useUpdateReducerAfterFetch({ preloadDataQuery, routerItems });
+    useUpdateReducerAfterFetch({ preloadDataQuery, routerItems });
+
     const { text, handleClick } = useHook(routerItems);
 
     return (
-        <Screen>
-            <Header />
-            <h1 className={S.title} >NotFound page</h1>
-            <p>{text}</p>
-            <button onClick={handleClick} className={S.button}>change text</button>
-            <p>routerItems: {JSON.stringify(routerItems)}</p>
-            {isLoading && (<p>Loading</p>)}
-        </Screen>
+        <Fragment>
+            <Helmet>
+                <title>Не найдено</title>
+                <noscript>404</noscript>
+            </Helmet>
+            <Screen>
+                <h1 className={S.title} >По вашему запросу ничего не найдено</h1>
+                <div className={S.content} >
+                    <p className={S.text}>{text}</p>
+                    <button onClick={handleClick} className={interactive.button}>change text</button>
+                    <p>routerItems: {JSON.stringify(routerItems)}</p>
+                </div>
+            </Screen>
+        </Fragment>
     );
 
-};
+}
 
 NotFound.propTypes = {
     preloadDataQuery: PropTypes.object.isRequired,

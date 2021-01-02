@@ -36,6 +36,9 @@
     "settings": {
         "react": {
             "version": "latest"
+        },
+        "jest": {
+            "version": "latest"
         }
     },
 
@@ -196,10 +199,9 @@
         "eol-last": "error",
         "eqeqeq": "error",
         "func-names": "off",
-        "func-style": ["warn", "expression"],
+        "func-style": ["error", "declaration"],
         "generator-star-spacing": ["error", { "before": false, "after": true }],
         "global-require": "warn",
-        "guard-for-in": "error",
         "handle-callback-err": ["error", "err"],
         "id-length": "off",
         "indent": ["error", 4, { "SwitchCase": 1, "MemberExpression": "off" }],
@@ -280,6 +282,7 @@
         "react/jsx-sort-props": "off",
         "react/jsx-tag-spacing": ["error", { "beforeSelfClosing": "always" }],
         "react/jsx-uses-react": "error",
+        "react/react-in-jsx-scope": "error",
         "react/jsx-uses-vars": "error",
         "react/no-danger": "off",
         "react/no-deprecated": "error",
@@ -293,7 +296,6 @@
         "react/no-unknown-property": "error",
         "react/prefer-es6-class": "error",
         "react/prop-types": "off",
-        "react/react-in-jsx-scope": "error",
         "react/require-extension": "off",
         "react/self-closing-comp": "error",
         "react/sort-comp": [

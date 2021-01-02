@@ -1,40 +1,94 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, useRoute } from 'wouter';
 import cx from 'classcat';
 
-const ActiveLink = ({ href, className, active, children }) => {
+import useHook from './hook';
 
-    const [isActive] = useRoute(href);
+import {
+    Link,
+} from 'react-router-dom';
 
-    return (
-        <Link
-            href={href}
-        >
+function ActiveLink({
+    href,
+    children,
+    alt,
+    rel,
+    className,
+    active,
+    isTargetBlank,
+    disabled,
+}) {
+
+    const {
+        isActive,
+        isAnchor,
+        handleClick,
+    } = useHook({ href, isTargetBlank });
+
+    if (typeof href !== 'string') {
+
+        return null;
+
+    }
+
+    if (disabled) {
+
+        return (
+            <span className={className} >
+                {children}
+            </span>
+        );
+
+    }
+
+    if (isAnchor) {
+
+        return (
             <a
                 href={href}
-                className={cx({
-                    [className]: true,
-                    [active]: isActive,
-                })}
+                alt={alt}
+                target={'_blank'}
+                rel="noreferrer"
+                className={className}
             >
                 {children}
             </a>
+        );
+
+    }
+
+    return (
+        <Link
+            to={href}
+            alt={alt}
+            rel={rel}
+            className={cx([className, isActive ? active : ''])}
+            onClick={handleClick}
+        >
+            {children}
         </Link>
     );
 
-};
+}
 
 ActiveLink.propTypes = {
     href: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
+    alt: PropTypes.string,
+    rel: PropTypes.string,
     className: PropTypes.string,
     active: PropTypes.string,
-    children: PropTypes.node.isRequired,
+    isTargetBlank: PropTypes.bool,
+    disabled: PropTypes.bool,
 };
 
 ActiveLink.defaultProps = {
+    alt: '',
+    rel: '',
     className: '',
     active: '',
+    isTargetBlank: false,
+    disabled: false,
 };
 
 export default ActiveLink;

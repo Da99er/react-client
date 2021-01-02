@@ -1,11 +1,13 @@
-import { UPLOAD, UPLOADED } from '@root/redux/testText/types';
+/* eslint-disable func-style */
 
-export const changeText = (text) => ({
+import { UPLOAD, UPLOADED } from './types';
+
+export const changeText = (payload) => ({
     type: UPLOAD,
-    payload: text,
+    payload,
 });
 
-export const changeTextSuccess = (text) => ({
+export const changeTextSuccess = (payload) => ({
     type: UPLOADED,
-    payload: text,
+    payload,
 });

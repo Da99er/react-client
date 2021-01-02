@@ -7,16 +7,20 @@ const headers = {
     'same-graphql': true,
 };
 
-const sameGraphQl = ({ method, params = {} }) => {
+function sameGraphQl({ method, params = {} }) {
 
     if (typeof params === 'object') {
+
+        const fullQuery = Object.entries(params)
+            .map((queryPair) => `${queryPair[0]}=${stringify(queryPair[1])}`)
+            .join('&');
 
         if (method === 'GET') {
 
             return httpXHR({
                 method,
                 headers,
-                url: `/apiv1/same-graphql?params=${stringify(params)}`,
+                url: `/apiv1/same-graphql?${fullQuery}`,
             });
 
         }
@@ -25,13 +29,13 @@ const sameGraphQl = ({ method, params = {} }) => {
             method,
             headers,
             url: '/apiv1/same-graphql',
-            body: stringify(params),
+            body: fullQuery,
         });
 
     }
 
     throw new Error('sameGraphQl: argument have wrong type');
 
-};
+}
 
 export default sameGraphQl;

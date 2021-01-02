@@ -1,7 +1,7 @@
-import NotFound from '@root/screens/NotFound';
 import TestText from '@root/screens/TestText';
+import NotFound from '@root/screens/NotFound';
 
 export default {
-    NotFound,
     TestText,
+    NotFound,
 };

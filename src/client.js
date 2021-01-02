@@ -1,6 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import smoothscroll from 'smoothscroll-polyfill';
 
+import { isSiteFirstTimeLoaded } from '@root/redux/gui/globals';
+
+import createStore from '@root/redux/createStore';
 import sameGraphQl from '@root/utils/sameGraphQl';
 import { parse } from '@root/utils/prepareQuery';
 import App from '@root/App';
@@ -15,20 +21,28 @@ sameGraphQl({
 
         const clientState = {
             ...initalState,
-            siteFirstTimeLoaded: true,
+            gui: {
+                [isSiteFirstTimeLoaded]: true,
+            },
         };
 
-        ReactDOM.hydrate(
-            <App
-                initalState={clientState}
-                requestUrl={location.pathname}
-            />,
-            document.getElementById('root')
+        const { store } = createStore(clientState);
+
+        const element = (
+            <Provider store={store}>
+                <BrowserRouter >
+                    <App />
+                </BrowserRouter>
+            </Provider>
         );
 
-    })
-    .catch((err) => {
+        ReactDOM.hydrate(element, document.getElementById('root'));
 
-        throw new Error(JSON.stringify(err));
+    })
+    .catch((error) => {
+
+        throw new Error(error);
 
     });
+
+smoothscroll.polyfill();

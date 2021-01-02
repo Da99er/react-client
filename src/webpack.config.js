@@ -1,29 +1,31 @@
 const webpack = require('webpack');
-const { join, resolve } = require('path');
+const { resolve } = require('path');
 
+const zlib = require('zlib');
+const CompressionPlugin = require('compression-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const BrotliPlugin = require('brotli-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const TerserPlugin = require('terser-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
+const DOMAIN_NAME = process.env.DOMAIN_NAME || 'localhost';
 const MODE = process.env.MODE || 'development';
 const ANALYZER = Boolean(process.env.ANALYZER);
-const PATH_TO_CLIENT = resolve(__dirname);
-const PATH_TO_TEMP = join(PATH_TO_CLIENT, 'temp');
+
+const ROOT_DIR = resolve(__dirname);
 
 const {
     PATH_TO_BUNDLE,
     PATH_TO_PUBLIC,
-} = require(join(PATH_TO_CLIENT, 'globals', 'pathTo'));
+} = require(resolve(__dirname, 'globals', 'pathTo'));
+
+const PATH_TO_TEMP = resolve(ROOT_DIR, 'temp');
 
 const isDevelope = MODE !== 'production';
 const isProduction = MODE === 'production';
 
-const recursiveIssuer = (m) => {
+function recursiveIssuer(m) {
 
     if (m.issuer) {
 
@@ -39,31 +41,34 @@ const recursiveIssuer = (m) => {
 
     }
 
-};
+}
 
-const createWebpackConfig = () => {
+function createWebpackConfig() {
 
     const config = {
         bail: true,
         mode: MODE,
         plugins: [],
-        devtool: isProduction ? '' : 'inline-source-map',
+        devtool: isProduction ? false : 'inline-source-map',
         module: {
             exprContextCritical: false,
             rules: [],
         },
         optimization: {},
-        context: resolve(PATH_TO_CLIENT),
+        context: resolve(ROOT_DIR),
+        watchOptions: {
+            ignored: /(node_modules|bower_components)/,
+        },
     };
 
     config.entry = {
-        client: resolve(PATH_TO_CLIENT, 'client'),
-        server: resolve(PATH_TO_CLIENT, 'server'),
+        client: resolve(ROOT_DIR, 'client'),
+        server: resolve(ROOT_DIR, 'server'),
         routes: resolve(PATH_TO_TEMP, 'routes'),
     };
 
     config.output = {
-        filename: '[hash].[name].js',
+        filename: '[fullhash].[name].js',
         path: PATH_TO_BUNDLE,
         publicPath: PATH_TO_PUBLIC,
         library: 'myLib',
@@ -84,41 +89,40 @@ const createWebpackConfig = () => {
     };
 
     config.plugins.push(new webpack.DefinePlugin({
-        ROOTDIR: JSON.stringify(__dirname),
         MODE: JSON.stringify(MODE),
+        'process.env.DOMAIN_NAME': JSON.stringify(DOMAIN_NAME),
     }));
 
     config.plugins.push(new MiniCssExtractPlugin({
         // Options similar to the same options in webpackOptions.output
         // both options are optional
-        filename: '[hash].[name].css',
+        filename: '[fullhash].[name].css',
         chunkFilename: '[id].css',
-    }));
-
-    config.plugins.push(new HtmlWebpackPlugin({
-        filename: 'index.html',
-        template: join(PATH_TO_CLIENT, 'templates', 'index.html'),
-        inject: true, // output links will be add in code
-        minify: {
-            html5: true,
-            collapseWhitespace: isProduction,
-        },
     }));
 
     config.plugins.push(new CleanWebpackPlugin({ cleanStaleWebpackAssets: true }));
 
     if (isProduction) {
 
-        config.plugins.push(new BrotliPlugin({
-            asset: '[path].br[query]',
-            test: /\.(js|css)$/,
+        config.plugins.push(new CompressionPlugin({
+            filename: '[path][base].gz',
+            algorithm: 'gzip',
+            test: /\.(js|css|html|svg)$/,
+            threshold: 10240,
             minRatio: 0.8,
         }));
 
         config.plugins.push(new CompressionPlugin({
-            filename: '[path].gz[query]',
-            algorithm: 'gzip',
-            test: /\.(js|css|gif)$/,
+            filename: '[path][base].br',
+            algorithm: 'brotliCompress',
+            test: /\.(js|css|html|svg)$/,
+            compressionOptions: {
+                params: {
+                    [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
+                },
+            },
+            threshold: 10240,
+            minRatio: 0.8,
         }));
 
         config.optimization.minimizer = [new TerserPlugin({
@@ -146,8 +150,8 @@ const createWebpackConfig = () => {
             '.js', '.json', '.css', '.scss',
         ],
         alias: {
-            '@root': PATH_TO_CLIENT,
-            '@temp': resolve(PATH_TO_CLIENT, 'temp'),
+            '@root': ROOT_DIR,
+            '@temp': PATH_TO_TEMP,
         },
     };
 
@@ -169,9 +173,8 @@ const createWebpackConfig = () => {
                     '@babel/env',
                     {
                         targets: {
-                            browsers: [
-                                'last 2 versions',
-                            ],
+                            ie: '11',
+                            safari: '10',
                         },
                     },
                 ],
@@ -183,7 +186,7 @@ const createWebpackConfig = () => {
 
     config.module.rules.push({
         test: /\.js$/,
-        loaders: ['cache-loader', babelLoader],
+        use: ['cache-loader', babelLoader],
         exclude: /(node_modules|bower_components)/,
     });
 
@@ -210,10 +213,10 @@ const createWebpackConfig = () => {
     });
 
     config.module.rules.push({
-        test: /\.(jpe?g|png|gif|svg|ttf|eot|woff|woff2)$/i,
+        test: /\.(jpe?g|png|gif|svg|ico|ttf|eot|woff|woff2)$/i,
         use: {
             loader: 'file-loader',
-            query: {
+            options: {
                 name: '[hash].[name].[ext]',
             },
         },
@@ -221,7 +224,7 @@ const createWebpackConfig = () => {
 
     return config;
 
-};
+}
 
 module.exports = () => [
     createWebpackConfig(),

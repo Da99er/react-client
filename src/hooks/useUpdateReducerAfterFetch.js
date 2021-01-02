@@ -1,95 +1,60 @@
-/* eslint-disable max-nested-callbacks */
-import { useEffect, useState } from 'react';
-import { batch, useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import qs from 'query-string';
-import { parse } from '@root/utils/prepareQuery';
 
-import prefixCreator from '@root/redux/utils/prefixCreator';
-import { getSiteFirstLoadedStatus } from '@root/redux/siteFirstTimeLoaded/selectors';
+import { getSiteFirstLoadedStatus } from '@root/redux/gui/selectors';
+import {
+    switchFirstTimeLoaded,
+    switchLoadingStatus,
+} from '@root/redux/gui/actions';
 
 import sameGraphQl from '@root/utils/sameGraphQl';
+import useUpdateStore from '@root/hooks/useUpdateStore';
 
-export default ({ preloadDataQuery, routerItems }) => {
+function useUpdateReducerAfterFetch({ preloadDataQuery, routerItems }) {
 
     const dispatch = useDispatch();
-    const [isLoading, setLoading] = useState(false);
-
+    const updateStoreHandle = useUpdateStore();
     const isSiteFirstLoaded = useSelector(getSiteFirstLoadedStatus);
 
     useEffect(() => {
 
         if (isSiteFirstLoaded) {
 
-            dispatch({
-                type: `${prefixCreator('siteFirstTimeLoaded')}SWITCH`,
-            });
-
+            dispatch(switchFirstTimeLoaded());
             return;
 
         }
 
-        const { params } = qs.parse(location.search);
-        const parsedParams = parse(params);
-
+        const parsedParams = qs.parse(window.location.search);
         const preloadQuery = {};
 
         Object.keys(preloadDataQuery).forEach((property) => {
 
             preloadQuery[property] = {
                 ...parsedParams,
-                ...routerItems,
                 ...preloadDataQuery[property],
+                ...routerItems,
                 pathname: location.pathname,
             };
 
         });
 
-        setLoading(true);
+        dispatch(switchLoadingStatus(true));
 
         sameGraphQl({
             method: 'GET',
             params: preloadQuery,
         })
-            .then((loaderProperties) => {
-
-                // name of action must be like "redux/SOMECOLOR/UPLOADED"
-
-                batch(() => {
-
-                    Object.keys(loaderProperties).forEach((property) => {
-
-                        dispatch({
-                            type: `${prefixCreator(property)}UPLOADED`,
-                            payload: loaderProperties[property],
-                        });
-
-                        if (loaderProperties[property] && loaderProperties[property].error) {
-
-                            setTimeout(() => {
-
-                                throw new Error(`${property}: ${loaderProperties[property].error}`);
-
-                            }, 10);
-
-                        }
-
-                    });
-
-                });
-
-                setLoading(false);
-
-            })
+            .then(updateStoreHandle)
             .catch((error) => {
 
                 throw new Error(error);
 
             });
 
-    }, [dispatch, preloadDataQuery, routerItems]); // eslint-disable-line
+    }, [preloadDataQuery, routerItems]); // eslint-disable-line
 
-    return {
-        isLoading,
-    };
+}
 
-};
+export default useUpdateReducerAfterFetch;

@@ -9,7 +9,7 @@ const routes = [{
         }
     })
 }, {
-    path: "/:anything*",
+    path: "*",
     component: 'NotFound',
     preloadDataQuery: stringify({
         'testText': {

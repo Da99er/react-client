@@ -1,11 +1,11 @@
-import { UPLOADED } from '@root/redux/testText/types';
+import { UPLOADED } from './types';
 
 const defaultState = {
     text: '',
     error: null,
 };
 
-const testTextReducer = (state = defaultState, { type, payload = {} }) => {
+function reducer(state = defaultState, { type, payload = {} }) {
 
     if (type === UPLOADED) {
 
@@ -18,6 +18,6 @@ const testTextReducer = (state = defaultState, { type, payload = {} }) => {
 
     return state;
 
-};
+}
 
-export default testTextReducer;
+export default reducer;

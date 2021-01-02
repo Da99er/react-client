@@ -1,58 +1,43 @@
 import React, { createElement } from 'react';
-
-import { Provider } from 'react-redux';
-import { pathToRegexp } from 'path-to-regexp';
-
-import { Router, Route, Switch } from 'wouter';
-import makeCachedMatcher from 'wouter/matcher';
-
-import routes from '@temp/routes';
-import createStore from '@root/redux/createStore';
+import { Route, Switch } from 'react-router-dom';
 
 import { parse } from '@root/utils/prepareQuery';
 
 import routerSet from '@root/routerSet';
+import routes from '@temp/routes';
 
-const convertPathToRegexp = (path) => {
+const allRoutes = (routes || []).map(({path, component, preloadDataQuery}) => {
 
-    const keys = [];
-    // we use original pathToRegexp package here with keys
-    const regexp = pathToRegexp(path, keys, { strict: false });
-
-    return { keys, regexp };
-
-};
-
-const myMatcher = makeCachedMatcher(convertPathToRegexp);
-
-const allRoutes = (routes || []).map((route) => {
-
-    const Component = routerSet[route.component];
-    const preloadDataQuery = parse(route.preloadDataQuery) || {};
+    const Component = routerSet[component];
 
     return (
         <Route
-            path={route.path}
-            key={route.path}
-        >
-            {(routerItems = {}) => <Component routerItems={routerItems.anything ? {} : routerItems} preloadDataQuery={preloadDataQuery} />}
-        </Route>
+            exact={true}
+            path={path}
+            key={path}
+            render={(props) => {
+
+                const { history, location, match } = props;
+
+                return (
+                    <Component
+                        history={history}
+                        location={location}
+                        routerItems={match.params}
+                        preloadDataQuery={parse(preloadDataQuery)}
+                    />
+                );
+
+            }}
+        />
     );
 
 });
 
-const App = ({ initalState, requestUrl }) => {
+function App() {
 
-    const { store, wouterUseLocation } = createStore(initalState, requestUrl);
+    return createElement(Switch, null, allRoutes);
 
-    return (
-        <Provider store={store} >
-            <Router hook={wouterUseLocation} matcher={myMatcher} >
-                {createElement(Switch, null, allRoutes)}
-            </Router>
-        </Provider>
-    );
-
-};
+}
 
 export default App;
